@@ -12,7 +12,8 @@ class MoviesApiMixin:
     def get_queryset(self):
         return Filmwork.objects.all()
 
-    def render_to_response(self, context, **response_kwargs):
+    @staticmethod
+    def render_to_response(context, **__):
         return JsonResponse(context)
 
 
@@ -35,5 +36,8 @@ class MoviesListApi(MoviesApiMixin, BaseListView):
 class MoviesDetailApi(MoviesApiMixin, BaseDetailView):
     def get_context_data(self, **kwargs):
         queryset = self.get_queryset()
+
+        # get object in convenient json-serializable form
         f = queryset.filter(pk=self.kwargs['pk']).values()[0]
+
         return f
