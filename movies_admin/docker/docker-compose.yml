@@ -12,18 +12,14 @@ services:
         volumes:
             - django_static:/project/static
         tty: true
-        ports:
-            - 8000:8000
         depends_on:
             - postgres_movies
-        restart: on-failure
+        restart: always
     postgres_movies:
         image: postgres:latest
         container_name: postgres_movies
         environment:
             POSTGRES_PASSWORD: ${DB_PASSWORD}
-        ports:
-            - 5432:5432
         volumes:
             - movies_data:/var/lib/postgresql/data
     nginx:
