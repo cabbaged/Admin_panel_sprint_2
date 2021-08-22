@@ -1,4 +1,6 @@
+from django.forms.models import model_to_dict
 from django.http import JsonResponse
+from django.shortcuts import get_object_or_404
 from django.views.generic.detail import BaseDetailView
 from django.views.generic.list import BaseListView
 
@@ -35,9 +37,6 @@ class MoviesListApi(MoviesApiMixin, BaseListView):
 
 class MoviesDetailApi(MoviesApiMixin, BaseDetailView):
     def get_context_data(self, **kwargs):
-        queryset = self.get_queryset()
-
-        # get object in convenient json-serializable form
-        f = queryset.filter(pk=self.kwargs['pk']).values()[0]
-
-        return f
+        f = get_object_or_404(self.get_queryset(), pk=self.kwargs['pk'])
+        fields = ('id', 'title', 'description', 'certificate', 'rating', 'type')
+        return model_to_dict(f, fields=fields)
