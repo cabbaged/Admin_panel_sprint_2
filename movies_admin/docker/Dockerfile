@@ -1,7 +1,7 @@
-FROM python:3-slim
+FROM python:3.9-slim
 
-RUN apt-get update -y \
-&& apt install -y gcc
+# "Exception: you need a C compiler to build uWSGI"
+RUN apt-get update -y && apt install -y gcc
 
 COPY requirements /project/
 WORKDIR /project
